@@ -4,6 +4,7 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"ExampleMixin",
+		"phase1.AbstractFurnaceAccessor",
 		"phase1.FurnaceTickMixin",
 		"phase1.RedstoneWireMixin"
 	],

@@ -44,16 +44,8 @@ public class FurnaceTickMixin {
             return;
         }
 
-        FurnaceTickAccessor accessor = (FurnaceTickAccessor) blockEntity;
+        AbstractFurnaceAccessor accessor = (AbstractFurnaceAccessor) blockEntity;
         accessor.watcherProtocol$setCookTime(Math.max(0, accessor.watcherProtocol$getCookTime() - 1));
     }
 
-    @Mixin(AbstractFurnaceBlockEntity.class)
-    public interface FurnaceTickAccessor {
-        @org.spongepowered.asm.mixin.gen.Accessor("cookTime")
-        int watcherProtocol$getCookTime();
-
-        @org.spongepowered.asm.mixin.gen.Accessor("cookTime")
-        void watcherProtocol$setCookTime(int cookTime);
-    }
 }
