@@ -1,14 +1,19 @@
 package com.mchorror.watcherprotocol.phases.phase1;
 
-import com.mchorror.watcherprotocol.Watcher_protocol;
 import com.mchorror.watcherprotocol.phases.Phase;
 import com.mchorror.watcherprotocol.phases.PhaseType;
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.GameRules;
+import net.minecraft.world.World;
 
 public class DesynchronizationPhase implements Phase {
-    private static final int LOG_INTERVAL_TICKS = 2400;
+    private static final int ADJUSTMENT_INTERVAL_TICKS = 600;
+    private static final int MAX_VARIANCE = 1;
 
-    private int logCooldown = LOG_INTERVAL_TICKS;
+    private final Map<net.minecraft.registry.RegistryKey<World>, Integer> baselineTickSpeeds = new HashMap<>();
+    private int adjustmentCooldown = ADJUSTMENT_INTERVAL_TICKS;
 
     @Override
     public PhaseType getType() {
@@ -17,22 +22,36 @@ public class DesynchronizationPhase implements Phase {
 
     @Override
     public void onStart(ServerWorld world) {
-        logCooldown = LOG_INTERVAL_TICKS;
-        Watcher_protocol.LOGGER.info("Phase 1 started for world {}.", world.getRegistryKey().getValue());
+        baselineTickSpeeds.putIfAbsent(world.getRegistryKey(), getRandomTickSpeed(world));
+        adjustmentCooldown = ADJUSTMENT_INTERVAL_TICKS;
     }
 
     @Override
     public void onStop(ServerWorld world) {
-        Watcher_protocol.LOGGER.info("Phase 1 stopped for world {}.", world.getRegistryKey().getValue());
+        Integer baseline = baselineTickSpeeds.remove(world.getRegistryKey());
+        if (baseline != null) {
+            setRandomTickSpeed(world, baseline);
+        }
     }
 
     @Override
     public void tick(ServerWorld world) {
-        if (--logCooldown > 0) {
+        if (--adjustmentCooldown > 0) {
             return;
         }
 
-        logCooldown = LOG_INTERVAL_TICKS;
-        Watcher_protocol.LOGGER.debug("Phase 1 heartbeat for world {}.", world.getRegistryKey().getValue());
+        adjustmentCooldown = ADJUSTMENT_INTERVAL_TICKS;
+        int baseline = baselineTickSpeeds.computeIfAbsent(world.getRegistryKey(), key -> getRandomTickSpeed(world));
+        int variance = world.getRandom().nextBetween(-MAX_VARIANCE, MAX_VARIANCE);
+        int adjusted = Math.max(1, baseline + variance);
+        setRandomTickSpeed(world, adjusted);
+    }
+
+    private static int getRandomTickSpeed(ServerWorld world) {
+        return world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).get();
+    }
+
+    private static void setRandomTickSpeed(ServerWorld world, int value) {
+        world.getGameRules().get(GameRules.RANDOM_TICK_SPEED).set(value, world.getServer());
     }
 }

@@ -4,6 +4,8 @@ import com.mchorror.watcherprotocol.config.WatcherConfigManager;
 import com.mchorror.watcherprotocol.core.PhaseController;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.text.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,5 +19,11 @@ public class Watcher_protocol implements ModInitializer {
 		LOGGER.info("Initializing The Watcher Protocol.");
 		WatcherConfigManager.init();
 		ServerTickEvents.END_WORLD_TICK.register(PHASE_CONTROLLER::tick);
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+			handler.getPlayer().sendMessage(
+					Text.translatable("watcher_protocol.init_message"),
+					false
+			);
+		});
 	}
 }
