@@ -4,6 +4,7 @@ import com.mchorror.watcherprotocol.config.WatcherConfigManager;
 import com.mchorror.watcherprotocol.phases.Phase;
 import com.mchorror.watcherprotocol.phases.PhaseType;
 import com.mchorror.watcherprotocol.phases.phase1.DesynchronizationPhase;
+import com.mchorror.watcherprotocol.phases.phase2.PerceptualCorruptionPhase;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,10 +15,13 @@ import net.minecraft.world.World;
 public class PhaseController {
     private final Map<PhaseType, Phase> phases = new EnumMap<>(PhaseType.class);
     private Phase activePhase;
+    private static final long PHASE_TWO_START_TICKS = 24000L * 10L;
+
     private final Set<net.minecraft.registry.RegistryKey<World>> startedWorlds = new HashSet<>();
 
     public PhaseController() {
         registerPhase(new DesynchronizationPhase());
+        registerPhase(new PerceptualCorruptionPhase());
         setActivePhase(PhaseType.PHASE_1, null);
     }
 
@@ -63,6 +67,10 @@ public class PhaseController {
 
         if (startedWorlds.add(world.getRegistryKey())) {
             activePhase.onStart(world);
+        }
+
+        if (activePhase.getType() == PhaseType.PHASE_1 && world.getTimeOfDay() >= PHASE_TWO_START_TICKS) {
+            setActivePhase(PhaseType.PHASE_2, world);
         }
 
         activePhase.tick(world);
