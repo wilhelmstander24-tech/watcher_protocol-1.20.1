@@ -1,6 +1,7 @@
 package com.mchorror.watcherprotocol;
 
 import com.mchorror.watcherprotocol.config.WatcherConfigManager;
+import com.mchorror.watcherprotocol.core.MentalMeltDownSystem;
 import com.mchorror.watcherprotocol.core.PhaseController;
 import com.mchorror.watcherprotocol.phases.phase1.MobDisruptionSystem;
 import net.fabricmc.api.ModInitializer;
@@ -21,6 +22,7 @@ public class Watcher_protocol implements ModInitializer {
 		WatcherConfigManager.init();
 		ServerTickEvents.END_WORLD_TICK.register(PHASE_CONTROLLER::tick);
 		MobDisruptionSystem.register();
+		MentalMeltDownSystem.register();
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			handler.getPlayer().sendMessage(
 					Text.translatable("watcher_protocol.init_message"),

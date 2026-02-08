@@ -2,6 +2,7 @@ package com.mchorror.watcherprotocol.phases.phase1;
 
 import com.mchorror.watcherprotocol.Watcher_protocol;
 import com.mchorror.watcherprotocol.config.WatcherConfigManager;
+import com.mchorror.watcherprotocol.core.MentalMeltDownSystem;
 import com.mchorror.watcherprotocol.phases.PhaseType;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -63,12 +65,14 @@ public final class MobDisruptionSystem {
             return ActionResult.PASS;
         }
 
-        if (entity instanceof PassiveEntity passive && serverWorld.getRandom().nextFloat() < 0.2f) {
+        double threatMultiplier = getMeltdownThreatMultiplier(player);
+
+        if (entity instanceof PassiveEntity passive && serverWorld.getRandom().nextFloat() < 0.2f * threatMultiplier) {
             player.damage(serverWorld.getDamageSources().mobAttack(passive), 1.0f);
             passive.setTarget(player);
         }
 
-        if (entity instanceof Angerable angerable && serverWorld.getRandom().nextFloat() < 0.35f) {
+        if (entity instanceof Angerable angerable && serverWorld.getRandom().nextFloat() < 0.35f * threatMultiplier) {
             angerable.setAngryAt(player.getUuid());
             if (entity instanceof MobEntity mob) {
                 mob.setTarget(player);
@@ -99,12 +103,19 @@ public final class MobDisruptionSystem {
         }
 
         if (mob instanceof HostileEntity hostile) {
-            if (world.getRandom().nextFloat() < 0.05f) {
+            double threatMultiplier = getMeltdownThreatMultiplier(world.getClosestPlayer(mob, 16.0));
+            if (world.getRandom().nextFloat() < 0.05f / (float) threatMultiplier) {
                 hostile.setTarget(null);
                 hostile.getNavigation().stop();
             }
-            if (world.getRandom().nextFloat() < 0.03f) {
+            if (world.getRandom().nextFloat() < 0.03f / (float) threatMultiplier) {
                 runAwayFromClosestPlayer(world, hostile, 1.2);
+            }
+            if (world.getRandom().nextFloat() < 0.04f * threatMultiplier) {
+                PlayerEntity target = world.getClosestPlayer(mob, 16.0);
+                if (target != null) {
+                    hostile.setTarget(target);
+                }
             }
         }
 
@@ -154,6 +165,24 @@ public final class MobDisruptionSystem {
         }
         away = away.normalize().multiply(8.0);
         mob.getNavigation().startMovingTo(mob.getX() + away.x, mob.getY(), mob.getZ() + away.z, speed);
+    }
+
+    private static double getMeltdownThreatMultiplier(PlayerEntity player) {
+        if (!(player instanceof ServerPlayerEntity serverPlayer)) {
+            return 1.0;
+        }
+
+        float meltdown = MentalMeltDownSystem.getMeltdown(serverPlayer);
+        if (meltdown < 20.0f) {
+            return 2.0;
+        }
+        if (meltdown < 40.0f) {
+            return 1.6;
+        }
+        if (meltdown < 60.0f) {
+            return 1.25;
+        }
+        return 1.0;
     }
 
     private static boolean isPhaseOneActive() {
