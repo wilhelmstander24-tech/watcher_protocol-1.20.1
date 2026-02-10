@@ -5,5 +5,7 @@ public enum PhaseType {
     PHASE_2,
     PHASE_3,
     PHASE_4,
-    PHASE_5
+    PHASE_5,
+    PHASE_6,
+    PHASE_7
 }

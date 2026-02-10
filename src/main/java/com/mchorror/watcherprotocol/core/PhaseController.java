@@ -8,6 +8,7 @@ import com.mchorror.watcherprotocol.phases.phase2.PerceptualCorruptionPhase;
 import com.mchorror.watcherprotocol.phases.phase3.ObserverPhase;
 import com.mchorror.watcherprotocol.phases.phase4.InterferencePhase;
 import com.mchorror.watcherprotocol.phases.phase5.MockeryPhase;
+import com.mchorror.watcherprotocol.phases.phase6.ConfrontationPhase;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -22,6 +23,7 @@ public class PhaseController {
     private static final long PHASE_THREE_START_TICKS = 24000L * 20L;
     private static final long PHASE_FOUR_START_TICKS = 24000L * 30L;
     private static final long PHASE_FIVE_START_TICKS = 24000L * 40L;
+    private static final long PHASE_SIX_START_TICKS = 24000L * 50L;
 
     private final Set<net.minecraft.registry.RegistryKey<World>> startedWorlds = new HashSet<>();
 
@@ -31,6 +33,7 @@ public class PhaseController {
         registerPhase(new ObserverPhase());
         registerPhase(new InterferencePhase());
         registerPhase(new MockeryPhase());
+        registerPhase(new ConfrontationPhase());
         setActivePhase(PhaseType.PHASE_1, null);
     }
 
@@ -86,6 +89,8 @@ public class PhaseController {
             setActivePhase(PhaseType.PHASE_4, world);
         } else if (activePhase.getType() == PhaseType.PHASE_4 && world.getTimeOfDay() >= PHASE_FIVE_START_TICKS) {
             setActivePhase(PhaseType.PHASE_5, world);
+        } else if (activePhase.getType() == PhaseType.PHASE_5 && world.getTimeOfDay() >= PHASE_SIX_START_TICKS) {
+            setActivePhase(PhaseType.PHASE_6, world);
         }
 
         activePhase.tick(world);
