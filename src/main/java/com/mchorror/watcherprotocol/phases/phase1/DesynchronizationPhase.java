@@ -1,5 +1,6 @@
 package com.mchorror.watcherprotocol.phases.phase1;
 
+import com.mchorror.watcherprotocol.config.WatcherConfigManager;
 import com.mchorror.watcherprotocol.phases.Phase;
 import com.mchorror.watcherprotocol.phases.PhaseType;
 import java.util.HashMap;
@@ -40,9 +41,13 @@ public class DesynchronizationPhase implements Phase {
 			return;
 		}
 
-		adjustmentCooldown = ADJUSTMENT_INTERVAL_TICKS;
+		double frequency = WatcherConfigManager.getConfig().getInterruptionFrequency();
+		double intensity = WatcherConfigManager.getConfig().getInterferenceIntensity();
+		double destructiveness = WatcherConfigManager.getConfig().getWorldDestructiveness();
+		adjustmentCooldown = Math.max(120, (int) Math.round(ADJUSTMENT_INTERVAL_TICKS / frequency));
 		int baseline = baselineTickSpeeds.computeIfAbsent(world.getRegistryKey(), key -> getRandomTickSpeed(world));
-		int variance = world.getRandom().nextBetween(-MAX_VARIANCE, MAX_VARIANCE);
+		int allowedVariance = Math.max(0, (int) Math.round(MAX_VARIANCE + intensity * destructiveness * 3.0));
+		int variance = world.getRandom().nextBetween(-allowedVariance, allowedVariance);
 		int adjusted = Math.max(1, baseline + variance);
 		setRandomTickSpeed(world, adjusted);
 	}

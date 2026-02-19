@@ -45,12 +45,13 @@ public final class MobDisruptionSystem {
 			return;
 		}
 
-		int cooldown = worldPulseCooldown.getOrDefault(world.getRegistryKey(), AI_PULSE_INTERVAL) - 1;
+		int pulseInterval = Math.max(6, (int) Math.round(AI_PULSE_INTERVAL / WatcherConfigManager.getConfig().getInterruptionFrequency()));
+		int cooldown = worldPulseCooldown.getOrDefault(world.getRegistryKey(), pulseInterval) - 1;
 		if (cooldown > 0) {
 			worldPulseCooldown.put(world.getRegistryKey(), cooldown);
 			return;
 		}
-		worldPulseCooldown.put(world.getRegistryKey(), AI_PULSE_INTERVAL);
+		worldPulseCooldown.put(world.getRegistryKey(), pulseInterval);
 
 		for (Entity entity : world.iterateEntities()) {
 			if (entity instanceof MobEntity mob) {
@@ -67,12 +68,13 @@ public final class MobDisruptionSystem {
 
 		double threatMultiplier = getMeltdownThreatMultiplier(player);
 
-		if (entity instanceof PassiveEntity passive && serverWorld.getRandom().nextFloat() < 0.2f * threatMultiplier) {
+		double intensity = WatcherConfigManager.getConfig().getInterferenceIntensity();
+		if (entity instanceof PassiveEntity passive && serverWorld.getRandom().nextFloat() < 0.2f * (float) intensity * threatMultiplier) {
 			player.damage(serverWorld.getDamageSources().mobAttack(passive), 1.0f);
 			passive.setTarget(player);
 		}
 
-		if (entity instanceof Angerable angerable && serverWorld.getRandom().nextFloat() < 0.35f * threatMultiplier) {
+		if (entity instanceof Angerable angerable && serverWorld.getRandom().nextFloat() < 0.35f * (float) intensity * threatMultiplier) {
 			angerable.setAngryAt(player.getUuid());
 			if (entity instanceof MobEntity mob) {
 				mob.setTarget(player);
@@ -88,7 +90,7 @@ public final class MobDisruptionSystem {
 			return ActionResult.PASS;
 		}
 
-		if (entity instanceof VillagerEntity villager && serverWorld.getRandom().nextFloat() < 0.15f) {
+		if (entity instanceof VillagerEntity villager && serverWorld.getRandom().nextFloat() < (float) (0.15f * WatcherConfigManager.getConfig().getInterferenceIntensity())) {
 			player.sendMessage(Text.translatable("watcher_protocol.phase1.villager_refuse"), true);
 			villager.getNavigation().stop();
 			return ActionResult.SUCCESS;
@@ -98,20 +100,21 @@ public final class MobDisruptionSystem {
 	}
 
 	private static void randomizeMobBehavior(ServerWorld world, MobEntity mob) {
-		if (mob instanceof AnimalEntity animal && world.getRandom().nextFloat() < 0.04f) {
+		double intensity = WatcherConfigManager.getConfig().getInterferenceIntensity();
+		if (mob instanceof AnimalEntity animal && world.getRandom().nextFloat() < 0.04f * (float) intensity) {
 			panicNearbyHerd(world, animal);
 		}
 
 		if (mob instanceof HostileEntity hostile) {
 			double threatMultiplier = getMeltdownThreatMultiplier(world.getClosestPlayer(mob, 16.0));
-			if (world.getRandom().nextFloat() < 0.05f / (float) threatMultiplier) {
+			if (world.getRandom().nextFloat() < 0.05f * (float) intensity / (float) threatMultiplier) {
 				hostile.setTarget(null);
 				hostile.getNavigation().stop();
 			}
-			if (world.getRandom().nextFloat() < 0.03f / (float) threatMultiplier) {
+			if (world.getRandom().nextFloat() < 0.03f * (float) intensity / (float) threatMultiplier) {
 				runAwayFromClosestPlayer(world, hostile, 1.2);
 			}
-			if (world.getRandom().nextFloat() < 0.04f * threatMultiplier) {
+			if (world.getRandom().nextFloat() < 0.04f * (float) intensity * threatMultiplier) {
 				PlayerEntity target = world.getClosestPlayer(mob, 16.0);
 				if (target != null) {
 					hostile.setTarget(target);
@@ -120,20 +123,20 @@ public final class MobDisruptionSystem {
 		}
 
 		if (mob instanceof VillagerEntity villager) {
-			if (world.getRandom().nextFloat() < 0.06f) {
+			if (world.getRandom().nextFloat() < 0.06f * (float) intensity) {
 				villager.getNavigation().stop();
 			}
-			if (world.getRandom().nextFloat() < 0.04f) {
+			if (world.getRandom().nextFloat() < 0.04f * (float) intensity) {
 				double yaw = villager.getBodyYaw() + 180.0;
 				villager.setYaw((float) yaw);
 				villager.setHeadYaw((float) yaw);
 			}
-			if (world.getRandom().nextFloat() < 0.03f) {
+			if (world.getRandom().nextFloat() < 0.03f * (float) intensity) {
 				runAwayFromClosestPlayer(world, villager, 0.9);
 			}
 		}
 
-		if (mob instanceof Angerable angerable && world.getRandom().nextFloat() < 0.05f) {
+		if (mob instanceof Angerable angerable && world.getRandom().nextFloat() < 0.05f * (float) intensity) {
 			PlayerEntity target = world.getClosestPlayer(mob, 12.0);
 			if (target != null) {
 				angerable.setAngryAt(target.getUuid());
@@ -187,7 +190,7 @@ public final class MobDisruptionSystem {
 
 	private static boolean isPhaseOneActive() {
 		return WatcherConfigManager.getConfig().isModEnabled()
-				&& WatcherConfigManager.getConfig().isPhaseOneEnabled()
+				&& WatcherConfigManager.getConfig().isPhaseEnabled(PhaseType.PHASE_1)
 				&& Watcher_protocol.PHASE_CONTROLLER.getActivePhaseType() == PhaseType.PHASE_1;
 	}
 }

@@ -29,11 +29,18 @@ public final class WatcherConfigManager {
 		try (Reader reader = Files.newBufferedReader(configPath)) {
 			WatcherProtocolConfig loaded = GSON.fromJson(reader, WatcherProtocolConfig.class);
 			if (loaded != null) {
+				sanitize(loaded);
 				config = loaded;
 			}
 		} catch (IOException exception) {
 			Watcher_protocol.LOGGER.error("Failed to load watcher protocol config.", exception);
 		}
+	}
+
+	private static void sanitize(WatcherProtocolConfig target) {
+		target.setInterferenceIntensity(target.getInterferenceIntensity());
+		target.setInterruptionFrequency(target.getInterruptionFrequency());
+		target.setWorldDestructiveness(target.getWorldDestructiveness());
 	}
 
 	public static WatcherProtocolConfig getConfig() {
@@ -49,6 +56,7 @@ public final class WatcherConfigManager {
 			return;
 		}
 
+		sanitize(config);
 		try (Writer writer = Files.newBufferedWriter(configPath)) {
 			GSON.toJson(config, writer);
 		} catch (IOException exception) {

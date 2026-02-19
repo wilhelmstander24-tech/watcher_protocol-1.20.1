@@ -72,9 +72,11 @@ public class PhaseController {
 			return;
 		}
 
-		if (activePhase.getType() == PhaseType.PHASE_1
-				&& !WatcherConfigManager.getConfig().isPhaseOneEnabled()) {
-			return;
+		if (!WatcherConfigManager.getConfig().isPhaseEnabled(activePhase.getType())) {
+			moveToNextEnabledPhase(world);
+			if (activePhase == null || !WatcherConfigManager.getConfig().isPhaseEnabled(activePhase.getType())) {
+				return;
+			}
 		}
 
 		if (startedWorlds.add(world.getRegistryKey())) {
@@ -94,5 +96,29 @@ public class PhaseController {
 		}
 
 		activePhase.tick(world);
+	}
+
+	private void moveToNextEnabledPhase(ServerWorld world) {
+		PhaseType next = switch (activePhase.getType()) {
+			case PHASE_1 -> PhaseType.PHASE_2;
+			case PHASE_2 -> PhaseType.PHASE_3;
+			case PHASE_3 -> PhaseType.PHASE_4;
+			case PHASE_4 -> PhaseType.PHASE_5;
+			case PHASE_5 -> PhaseType.PHASE_6;
+			case PHASE_6 -> null;
+		};
+		while (next != null && !WatcherConfigManager.getConfig().isPhaseEnabled(next)) {
+			next = switch (next) {
+				case PHASE_1 -> PhaseType.PHASE_2;
+				case PHASE_2 -> PhaseType.PHASE_3;
+				case PHASE_3 -> PhaseType.PHASE_4;
+				case PHASE_4 -> PhaseType.PHASE_5;
+				case PHASE_5 -> PhaseType.PHASE_6;
+				case PHASE_6 -> null;
+			};
+		}
+		if (next != null) {
+			setActivePhase(next, world);
+		}
 	}
 }
