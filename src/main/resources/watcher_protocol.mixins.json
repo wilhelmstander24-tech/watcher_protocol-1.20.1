@@ -3,7 +3,10 @@
 	"package": "com.mchorror.watcherprotocol.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ExampleMixin"
+		"ExampleMixin",
+		"phase1.AbstractFurnaceAccessor",
+		"phase1.FurnaceTickMixin",
+		"phase1.RedstoneWireMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

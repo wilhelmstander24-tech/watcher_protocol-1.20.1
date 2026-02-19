@@ -20,6 +20,9 @@
 		"client": [
 			"com.mchorror.watcherprotocol.Watcher_protocolClient"
 		],
+		"modmenu": [
+			"com.mchorror.watcherprotocol.client.WatcherModMenuIntegration"
+		],
 		"fabric-datagen": [
 			"com.mchorror.watcherprotocol.Watcher_protocolDataGenerator"
 		]
@@ -35,6 +38,6 @@
 	},
 
 	"suggests": {
-		"another-mod": "*"
+		"modmenu": "*"
 	}
 }

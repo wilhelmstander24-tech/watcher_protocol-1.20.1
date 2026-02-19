@@ -1,0 +1,12 @@
+{
+  "watcher_protocol.config.title": "Watcher Protocol Config",
+  "watcher_protocol.config.path": "Config path",
+  "watcher_protocol.config.save": "Save",
+  "watcher_protocol.config.cancel": "Cancel",
+  "watcher_protocol.config.mod_enabled": "Mod enabled",
+  "watcher_protocol.config.phase_one_enabled": "Phase 1 enabled",
+  "watcher_protocol.config.ingame_access": "Allow in-game config",
+  "watcher_protocol.init_message": "The Watcher Protocol has initialised.",
+  "watcher_protocol.phase1.villager_refuse": "The villager refuses to engage.",
+  "watcher_protocol.hud.mental_stability": "Mental Stability"
+}
