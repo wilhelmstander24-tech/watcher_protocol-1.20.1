@@ -2,6 +2,16 @@ package com.mchorror.watcherprotocol.phases.phase6;
 
 import com.mchorror.watcherprotocol.phases.Phase;
 import com.mchorror.watcherprotocol.phases.PhaseType;
+import com.mchorror.watcherprotocol.phases.phase6.system.AudioRealityDistortionSystem;
+import com.mchorror.watcherprotocol.phases.phase6.system.BiomeCorruptionSystem;
+import com.mchorror.watcherprotocol.phases.phase6.system.PhaseSixSystem;
+import com.mchorror.watcherprotocol.phases.phase6.system.TemporalDistortionSystem;
+import com.mchorror.watcherprotocol.phases.phase6.system.TerrainCorruptionSystem;
+import com.mchorror.watcherprotocol.phases.phase6.system.VisualCognitiveAttackSystem;
+import com.mchorror.watcherprotocol.phases.phase6.system.WeatherBreakdownSystem;
+import com.mchorror.watcherprotocol.phases.phase6.system.WorldPersistenceCorruptionSystem;
+import com.mchorror.watcherprotocol.phases.phase6.system.WorldRuleViolationSystem;
+import com.mchorror.watcherprotocol.phases.phase6.system.WorldWatchingSystem;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +45,18 @@ public class ConfrontationPhase implements Phase {
 
     private final Map<net.minecraft.registry.RegistryKey<World>, UUID> watcherIds = new HashMap<>();
     private final Map<UUID, Integer> stareTicks = new HashMap<>();
+    private final List<PhaseSixSystem> systems = List.of(
+            new TemporalDistortionSystem(),
+            new BiomeCorruptionSystem(),
+            new WeatherBreakdownSystem(),
+            new TerrainCorruptionSystem(),
+            new WorldRuleViolationSystem(),
+            new AudioRealityDistortionSystem(),
+            new VisualCognitiveAttackSystem(),
+            new WorldPersistenceCorruptionSystem(),
+            new WorldWatchingSystem());
     private int respawnCooldown;
+    private double corruptionLevel;
 
     @Override
     public PhaseType getType() {
@@ -46,15 +67,26 @@ public class ConfrontationPhase implements Phase {
     public void onStart(ServerWorld world) {
         respawnCooldown = 0;
         stareTicks.clear();
+        corruptionLevel = 0.75 + world.getRandom().nextDouble() * 0.15;
+        for (PhaseSixSystem system : systems) {
+            system.onStart(world, corruptionLevel);
+        }
     }
 
     @Override
     public void onStop(ServerWorld world) {
         despawnWatcher(world);
+        for (PhaseSixSystem system : systems) {
+            system.onStop(world);
+        }
     }
 
     @Override
     public void tick(ServerWorld world) {
+        for (PhaseSixSystem system : systems) {
+            system.tick(world, corruptionLevel);
+        }
+
         List<ServerPlayerEntity> players = world.getPlayers();
         if (players.isEmpty()) {
             despawnWatcher(world);
