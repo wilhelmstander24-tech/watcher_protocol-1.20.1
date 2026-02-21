@@ -9,9 +9,11 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import vazkii.patchouli.api.PatchouliAPI;
 
 public class Watcher_protocol implements ModInitializer {
 	public static final String MOD_ID = "watcher_protocol";
