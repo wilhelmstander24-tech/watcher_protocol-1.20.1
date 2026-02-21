@@ -1,0 +1,18 @@
+{
+  "name": "Triggers & Escalation",
+  "category": "watcher_protocol:basics",
+  "icon": "minecraft:comparator",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "What Feeds the Protocol",
+      "text": "Escalation is tied to your behavior over time. Mining depth patterns, repeated travel lanes, chest organization, sleep timing, and base growth all provide data the Watcher can mirror back at you."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "How to Slow Progress",
+      "text": "Rotate activity blocks. Alternate between mining, surface gathering, and relocation. Avoid long uninterrupted grinding sessions. Sleep before exhaustion spirals your decision making. Structure your world so retreat is always possible."
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "First 3 Nights",
+  "category": "watcher_protocol:basics",
+  "icon": "minecraft:torch",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Immediate Priorities",
+      "text": "Treat this world like a hostile expedition, not a long-term build. During your first nights, gather food, logs, coal, and iron while keeping routes simple and repeatable. The protocol thrives on routine; obvious habits become targeting data."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Operational Setup",
+      "text": "Build a compact shelter with clear sight lines. Keep a spare bed, shield, and 2 food stacks in a dedicated emergency chest. Use signs to timestamp unusual events (sound, block movement, timing errors). Documentation prevents second-guessing later."
+    }
+  ]
+}

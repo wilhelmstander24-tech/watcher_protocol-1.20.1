@@ -1,0 +1,18 @@
+{
+  "name": "Confrontation Protocol",
+  "category": "watcher_protocol:survival",
+  "icon": "minecraft:shield",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "If You See the Watcher",
+      "text": "1) Create distance. 2) Keep an exit route in view. 3) Do not corner yourself underground. 4) Reposition to known terrain. 5) Secure your spawn point before any re-engagement."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Win Condition",
+      "text": "There is no guaranteed victory condition against the protocol. Survival means managing escalation, preserving mobility, and recognizing when total withdrawal from a world is the rational decision."
+    }
+  ]
+}

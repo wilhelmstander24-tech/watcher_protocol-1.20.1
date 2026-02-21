@@ -1,0 +1,18 @@
+{
+  "name": "Base Hardening",
+  "category": "watcher_protocol:survival",
+  "icon": "minecraft:iron_door",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Layered Safety",
+      "text": "Use segmented rooms instead of one large hall. Keep core storage behind two controlled chokepoints. Label critical chests by function so misplaced items are immediately visible."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Fallback Caches",
+      "text": "Hide three micro-caches: food + tools, armor + weapon, and navigation supplies. Place each in different directions from spawn. If your main base is compromised, momentum is survival."
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Phase Atlas",
+  "description": "Expected behavior from Phase 1 through Phase 7. Use this to identify escalation.",
+  "icon": "minecraft:clock",
+  "sortnum": 1
+}

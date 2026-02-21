@@ -1,0 +1,18 @@
+{
+  "name": "Phase 1-2: Unsettling to Doubt",
+  "category": "watcher_protocol:phases",
+  "icon": "minecraft:wheat",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Phase 1 Indicators",
+      "text": "Expect inconsistent crop growth, furnace irregularities, and redstone timing faults. None are lethal alone, but each erodes trust in your systems. Start redundancy now: backup fuel, duplicate farms, and manual timing checkpoints."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Phase 2 Indicators",
+      "text": "You may hear footsteps, mining, or door sounds with no source. Investigate once, then disengage. Chasing every audio event drains time and exposes you to real threats while your attention is split."
+    }
+  ]
+}

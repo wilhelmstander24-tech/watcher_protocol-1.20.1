@@ -9,14 +9,18 @@ import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import vazkii.patchouli.api.PatchouliAPI;
 
 public class Watcher_protocol implements ModInitializer {
 	public static final String MOD_ID = "watcher_protocol";
+	private static final Identifier GUIDE_BOOK_ID = new Identifier(MOD_ID, "watcher_survival_guide");
+	private static final String GUIDE_TAG = MOD_ID + ".guide_received";
 
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -32,10 +36,32 @@ public class Watcher_protocol implements ModInitializer {
 		MobDisruptionSystem.register();
 		PlayerMemorySystem.register();
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-			handler.getPlayer().sendMessage(
+			var player = handler.getPlayer();
+			player.sendMessage(
 					Text.translatable("watcher_protocol.init_message"),
 					false
 			);
+
+			if (!FabricLoader.getInstance().isModLoaded("patchouli") || player.getCommandTags().contains(GUIDE_TAG)) {
+				return;
+			}
+
+			ItemStack guideBook = PatchouliAPI.get().getBookStack(GUIDE_BOOK_ID);
+			if (guideBook.isEmpty()) {
+				return;
+			}
+
+			for (ItemStack stack : player.getInventory().main) {
+				if (ItemStack.canCombine(stack, guideBook)) {
+					player.addCommandTag(GUIDE_TAG);
+					return;
+				}
+			}
+
+			if (!player.getInventory().insertStack(guideBook.copy())) {
+				player.dropItem(guideBook.copy(), false);
+			}
+			player.addCommandTag(GUIDE_TAG);
 		});
 	}
 }

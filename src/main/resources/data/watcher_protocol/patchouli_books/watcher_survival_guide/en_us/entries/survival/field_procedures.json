@@ -1,0 +1,18 @@
+{
+  "name": "Field Procedures",
+  "category": "watcher_protocol:survival",
+  "icon": "minecraft:compass",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Exploration Discipline",
+      "text": "Never explore without markers. Use torches, pillars, or signs at branch points. When an anomaly triggers, execute the same return procedure every time: orient, mark, retreat, regroup."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Audio Management",
+      "text": "Sound cues matter, but obsession kills focus. If you hear unexplained events repeatedly in one area, record coordinates and leave. Re-enter during daylight with a fresh inventory and clear objective."
+    }
+  ]
+}

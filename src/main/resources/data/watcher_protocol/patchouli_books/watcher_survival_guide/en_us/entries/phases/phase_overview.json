@@ -1,0 +1,27 @@
+{
+  "name": "Phase Overview",
+  "category": "watcher_protocol:phases",
+  "icon": "minecraft:clock",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Seven-Phase Model",
+      "text": "The protocol follows a staged escalation model from subtle environmental drift to direct confrontation and reality decay. If you can identify the current phase, you can choose the right response profile."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Response Rule",
+      "text": "When a new anomaly appears, reduce risk first and investigate second. Lock down supplies, mark your current location, then test whether the anomaly repeats. False certainty is the Watcher's strongest weapon."
+    },
+    {
+      "type": "patchouli:relations",
+      "entries": [
+        "watcher_protocol:phases/phase_1_2",
+        "watcher_protocol:phases/phase_3_4",
+        "watcher_protocol:phases/phase_5_7"
+      ],
+      "text": "Continue into the detailed phase sections."
+    }
+  ]
+}

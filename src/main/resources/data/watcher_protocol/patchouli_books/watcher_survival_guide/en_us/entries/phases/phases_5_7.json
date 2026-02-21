@@ -1,0 +1,23 @@
+{
+  "name": "Phase 5-7: Mockery to Unraveling",
+  "category": "watcher_protocol:phases",
+  "icon": "minecraft:ender_eye",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Phase 5 - Mockery",
+      "text": "The Watcher imitates you: mirrored footsteps, copied mining rhythms, and distorted versions of familiar spaces. Stop using predictable loops. Change mining cadence and vary your approach vectors."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Phase 6 - Confrontation",
+      "text": "Manifestation risk is high. Keep distance, avoid tunnel entrapment, and preserve stamina for repositioning. If it appears, prioritize line-of-sight control and immediate relocation rather than pursuit."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Phase 7 - Unraveling",
+      "text": "Reality faults can invalidate terrain assumptions and movement plans. Travel light, keep duplicate gear cached off-site, and be ready to abandon the world if infrastructure becomes unreliable."
+    }
+  ]
+}
