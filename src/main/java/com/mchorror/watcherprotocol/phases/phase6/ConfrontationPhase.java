@@ -23,6 +23,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.EndermanEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -54,7 +55,8 @@ public class ConfrontationPhase implements Phase {
             new AudioRealityDistortionSystem(),
             new VisualCognitiveAttackSystem(),
             new WorldPersistenceCorruptionSystem(),
-            new WorldWatchingSystem());
+            new WorldWatchingSystem()
+    );
     private int respawnCooldown;
     private double corruptionLevel;
 
@@ -121,7 +123,7 @@ public class ConfrontationPhase implements Phase {
             }
         }
 
-        ServerPlayerEntity nearest = (ServerPlayerEntity) world.getClosestPlayer(watcher, WATCHER_FOLLOW_RANGE);
+        PlayerEntity nearest = world.getClosestPlayer(watcher, WATCHER_FOLLOW_RANGE);
         if (nearest == null) {
             return;
         }
@@ -129,7 +131,7 @@ public class ConfrontationPhase implements Phase {
         watcher.setAngryAt(nearest.getUuid());
         watcher.setTarget(nearest);
         if (!staredAt) {
-            randomizeHostileBehavior(world, watcher, nearest);
+            randomizeHostileBehavior(world, watcher, (ServerPlayerEntity) nearest);
         }
     }
 
