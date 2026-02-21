@@ -15,12 +15,5 @@
   "watcher_protocol.config.world_destructiveness": "World destructiveness",
   "watcher_protocol.config.ingame_access": "Allow in-game config",
   "watcher_protocol.init_message": "The Watcher Protocol has initialized.",
-  "watcher_protocol.phase1.villager_refuse": "The villager refuses to engage.",
-  "item.watcher_protocol.watcher_guide": "Watcher Survival Guide",
-  "item.watcher_protocol.anomaly_journal": "Anomaly Journal",
-  "watcher_protocol.guide.patchouli_missing": "Patchouli is required to open the survival guide.",
-  "watcher_protocol.guide.script_shift": "Guide script shift: %s",
-  "watcher_protocol.journal.logged": "Anomaly logged. Total entries: %s",
-  "watcher_protocol.journal.storage_hint": "Stored in this journal item (NBT: anomaly_entries). Keep this item to retain your logs.",
-  "watcher_protocol.guide.open_failed": "Could not open the survival guide. Verify the book id/path in Patchouli resources."
+  "watcher_protocol.phase1.villager_refuse": "The villager refuses to engage."
 }

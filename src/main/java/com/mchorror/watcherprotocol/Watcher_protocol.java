@@ -4,6 +4,7 @@ import com.mchorror.watcherprotocol.config.WatcherConfigManager;
 import com.mchorror.watcherprotocol.core.PhaseController;
 import com.mchorror.watcherprotocol.core.memory.PlayerMemorySystem;
 import com.mchorror.watcherprotocol.phases.phase1.MobDisruptionSystem;
+import com.mchorror.watcherprotocol.registry.WatcherItems;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -24,6 +25,7 @@ public class Watcher_protocol implements ModInitializer {
 		LOGGER.info("Initializing the watcher.");
 		LOGGER.info("Initializing The Watcher Protocol.");
 		WatcherConfigManager.init();
+		WatcherItems.register();
 		ServerTickEvents.END_WORLD_TICK.register(PHASE_CONTROLLER::tick);
 		MobDisruptionSystem.register();
 		PlayerMemorySystem.register();
