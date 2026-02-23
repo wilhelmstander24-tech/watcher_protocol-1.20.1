@@ -17,9 +17,9 @@
     {
       "type": "patchouli:relations",
       "entries": [
-        "watcher_protocol:phases/phase_1_2",
-        "watcher_protocol:phases/phase_3_4",
-        "watcher_protocol:phases/phase_5_7"
+        "watcher_protocol:phases/phases_1_2",
+        "watcher_protocol:phases/phases_3_4",
+        "watcher_protocol:phases/phases_5_7"
       ],
       "text": "Continue into the detailed phase sections."
     }

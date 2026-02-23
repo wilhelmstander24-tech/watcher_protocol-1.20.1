@@ -3,13 +3,12 @@
 "landing_text": "$(l)Read this before your world changes.$()$(br2)This field manual documents warning signs, phase behavior, and survival practices for THE WATCHER PROTOCOL. Keep it nearby. Delay is dangerous.",
 "book_texture": "patchouli:textures/gui/book_green.png",
 "model": "patchouli:book_green",
-"i18n": true,
 "show_progress": false,
+  "i18": true,
 "version": 1,
 "subtitle": "Anomalies, phases, and response plans",
 "use_resource_pack": true,
 "creative_tab": "minecraft:tools_and_utilities",
 "advancements_tab": "minecraft:adventure",
 "index_icon": "minecraft:ender_eye"
-
 }
