@@ -34,8 +34,7 @@
  "fabricloader": ">=0.18.4",
  "minecraft": "~1.20.1",
  "java": ">=17",
- "fabric-api": "*",
-   "patchouli": "*"
+ "fabric-api": "*"
  },
  "suggests": {
  "modmenu": "*"
