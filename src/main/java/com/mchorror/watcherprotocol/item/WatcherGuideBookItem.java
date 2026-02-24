@@ -17,8 +17,7 @@ public class WatcherGuideBookItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
         if (!world.isClient) {
-            user.sendMessage(Text.literal("Guidebooks now use the built-in Watcher Survival Manual."), true);
-        }
+            user.sendMessage(Text.literal("Guide uses bundled KubeJS-style JSON pages and is auto-delivered on join."), true);}
         return TypedActionResult.success(stack, world.isClient());
     }
 }
